@@ -1,5 +1,5 @@
-use std::net::TcpListener;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
+use std::net::TcpListener;
 use uuid::Uuid;
 
 use zero2prod::configuration::{get_configuration, DatabaseSettings};
@@ -11,8 +11,7 @@ pub struct TestApp {
 }
 
 async fn spawn_app() -> TestApp {
-    let listener = TcpListener::bind("127.0.0.1:0")
-        .expect("Failed to bind random port.");
+    let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port.");
     let port = listener.local_addr().unwrap().port();
     let address = format!("http://127.0.0.1:{}", port);
     let mut configuration = get_configuration().expect("Failed to read configuration.");
@@ -25,7 +24,7 @@ async fn spawn_app() -> TestApp {
 
     TestApp {
         address,
-        db_pool: connection_pool
+        db_pool: connection_pool,
     }
 }
 
@@ -34,7 +33,8 @@ pub async fn configure_database(config: &DatabaseSettings) -> PgPool {
     let mut connection = PgConnection::connect(&config.connection_string_without_db())
         .await
         .expect("Failed to connect to Postgres.");
-    connection.execute(format!(r#"CREATE DATABASE "{}";"#,config.database_name).as_str())
+    connection
+        .execute(format!(r#"CREATE DATABASE "{}";"#, config.database_name).as_str())
         .await
         .expect("Failed to create database.");
 
@@ -68,11 +68,11 @@ async fn health_check_works() {
 }
 
 #[tokio::test]
-async fn subscribe_returns_200_for_valid_form_data () {
+async fn subscribe_returns_200_for_valid_form_data() {
     //Arrange
     let test_app = spawn_app().await;
     let client = reqwest::Client::new();
-    
+
     let body = "name=brady%20carmichael&email=brvdy.dev%40gmail.com";
 
     //Act
@@ -104,7 +104,7 @@ async fn subscribe_returns_400_when_data_is_missing() {
     let test_cases = vec![
         ("name=brady%20carmichael", "missing email"),
         ("mail=brvdy.dev%40gmail.com", "missing name"),
-        ("", "missing email & name")
+        ("", "missing email & name"),
     ];
 
     //Act
@@ -120,7 +120,8 @@ async fn subscribe_returns_400_when_data_is_missing() {
         assert_eq!(
             400,
             response.status().as_u16(),
-            "The API did not fail with 400 Bad Request when the payload was {}.", error_message
+            "The API did not fail with 400 Bad Request when the payload was {}.",
+            error_message
         );
     }
 }

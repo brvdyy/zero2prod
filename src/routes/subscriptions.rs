@@ -7,13 +7,13 @@ use sqlx::PgPool;
 #[derive(serde::Deserialize)]
 pub struct FormData {
     email: String,
-    name: String
+    name: String,
 }
 
 pub async fn subscribe(
     form: web::Form<FormData>,
     //Retrieiving a conneciton from the application state
-    pool: web::Data<PgPool>
+    pool: web::Data<PgPool>,
 ) -> HttpResponse {
     match sqlx::query!(
         r#"
@@ -34,5 +34,4 @@ pub async fn subscribe(
             HttpResponse::InternalServerError().finish()
         }
     }
-    
 }
