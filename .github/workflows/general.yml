@@ -6,13 +6,14 @@ on:
   # NB: this differs from the book's project!
   # These settings allow us to run this specific CI pipeline for PRs against
   # this specific branch (a.k.a. book chapter).
+  workflow_dispatch:
   push:
     branches:
-      - root-chapter-03-part1
+      - main
   pull_request:
     types: [ opened, synchronize, reopened ]
     branches:
-      - root-chapter-03-part1
+      - main
 
 env:
   CARGO_TERM_COLOR: always
