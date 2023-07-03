@@ -30,12 +30,13 @@ uuid = { version = "0.8.1", features = ["v4"] }
 version = "0.5.7"
 default-features = false
 features = [
-    "runtime-actix-rustls", 
-    "macros", 
-    "postgres", 
-    "uuid", 
     "chrono", 
-    "migrate"
+    "macros", 
+    "migrate",
+    "offline",
+    "postgres", 
+    "runtime-actix-rustls", 
+    "uuid"
 ]
 
 [dev-dependencies]
