@@ -53,9 +53,7 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     let configuration_directory = base_path.join("configuration");
 
     //Read the default configuration file
-    settings.merge(
-        config::File::from(configuration_directory.join("base")).required(true)
-    )?;
+    settings.merge(config::File::from(configuration_directory.join("base")).required(true))?;
 
     //Detect the current enviornment
     //Default to local if unspecified
@@ -66,7 +64,7 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
 
     //Layer on the enviornment specific values
     settings.merge(
-        config::File::from(configuration_directory.join(enviornment.as_str())).required(true)
+        config::File::from(configuration_directory.join(enviornment.as_str())).required(true),
     )?;
 
     //Try to convert values read into `Settings` type
