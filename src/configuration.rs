@@ -57,10 +57,10 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
 
     //Detect the current enviornment
     //Default to local if unspecified
-    let enviornment: Environment = std::env::var("APP_ENVIORNMENT")
+    let enviornment: Environment = std::env::var("APP_ENVIRONMENT")
         .unwrap_or_else(|_| "local".into())
         .try_into()
-        .expect("Failed to parse APP_ENVIORNMENT.");
+        .expect("Failed to parse APP_ENVIRONMENT.");
 
     //Layer on the enviornment specific values
     settings.merge(
