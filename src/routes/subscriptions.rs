@@ -17,11 +17,7 @@ pub struct FormData {
         subscriber_name = %form.name
     )
 )]
-pub async fn subscribe(
-    form: web::Form<FormData>,
-    //Retrieiving a conneciton from the application state
-    pool: web::Data<PgPool>,
-) -> HttpResponse {
+pub async fn subscribe(form: web::Form<FormData>, pool: web::Data<PgPool>) -> HttpResponse {
     match insert_subscriber(&form, &pool).await {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(_) => HttpResponse::InternalServerError().finish(),
@@ -32,11 +28,7 @@ pub async fn subscribe(
     name = "Saving new subscriber details in the database.",
     skip(form, pool)
 )]
-pub async fn insert_subscriber(
-    form: &FormData,
-    //Retrieiving a conneciton from the application state
-    pool: &PgPool,
-) -> Result<(), sqlx::Error> {
+pub async fn insert_subscriber(form: &FormData, pool: &PgPool) -> Result<(), sqlx::Error> {
     sqlx::query!(
         r#"
         INSERT INTO subscriptions (id, email, name, subscribed_at)
