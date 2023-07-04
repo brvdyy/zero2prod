@@ -55,16 +55,16 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     //Read the default configuration file
     settings.merge(config::File::from(configuration_directory.join("base")).required(true))?;
 
-    //Detect the current enviornment
+    //Detect the current environment
     //Default to local if unspecified
-    let enviornment: Environment = std::env::var("APP_ENVIRONMENT")
+    let environment: Environment = std::env::var("APP_ENVIRONMENT")
         .unwrap_or_else(|_| "local".into())
         .try_into()
         .expect("Failed to parse APP_ENVIRONMENT.");
 
-    //Layer on the enviornment specific values
+    //Layer on the environment specific values
     settings.merge(
-        config::File::from(configuration_directory.join(enviornment.as_str())).required(true),
+        config::File::from(configuration_directory.join(environment.as_str())).required(true),
     )?;
 
     //Try to convert values read into `Settings` type
@@ -93,7 +93,7 @@ impl TryFrom<String> for Environment {
             "local" => Ok(Self::Local),
             "production" => Ok(Self::Production),
             other => Err(format!(
-                "{} is not a supported enviornment. Please use `local` or `production`.",
+                "{} is not a supported environment. Please use `local` or `production`.",
                 other
             )),
         }
